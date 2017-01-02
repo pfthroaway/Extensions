@@ -99,6 +99,20 @@ namespace Extensions
             int.TryParse(obj.ToString(), out temp);
             return temp;
         }
+
+        public static int Parse(bool bln)
+        {
+            int temp = 0;
+            try
+            {
+                temp = Convert.ToInt32(bln);
+            }
+            catch (Exception ex)
+            {
+                new Notification(ex.Message, "Error Converting Boolean to Integer", NotificationButtons.OK).ShowDialog();
+            }
+            return temp;
+        }
     }
 
     /// <summary>Extension class to more easily parse Booleans.</summary>
@@ -195,7 +209,7 @@ namespace Extensions
         /// <returns>Returns true if character is a period or comma</returns>
         public static bool IsPeriodOrComma(this char c)
         {
-            return c.Equals('.') || c.Equals(',');
+            return c.Equals('.') | c.Equals(',');
         }
 
         /// <summary>Shuffles a List.</summary>
