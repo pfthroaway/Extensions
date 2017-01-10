@@ -212,6 +212,14 @@ namespace Extensions
             return c.Equals('.') | c.Equals(',');
         }
 
+        /// <summary>Determines if this character is a hyphen.</summary>
+        /// <param name="c">Character to be evaluated</param>
+        /// <returns>Returns true if character is a hyphen</returns>
+        public static bool IsHyphen(this char c)
+        {
+            return c.Equals('-');
+        }
+
         /// <summary>Shuffles a List.</summary>
         /// <typeparam name="T">Generic Type</typeparam>
         /// <param name="list">List Name</param>

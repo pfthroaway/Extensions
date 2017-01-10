@@ -6,7 +6,8 @@ using System.Windows.Input;
 
 namespace Extensions
 {
-    public enum KeyType { DecimalNumbers, Letters, NegativeDecimalNumbers, NegativeNumbers, Numbers }
+    /// <summary>Key types available for standard TextBox/PasswordBox manipulation.</summary>
+    public enum KeyType { Decimals, Integers, Letters, NegativeDecimals, NegativeIntegers }
 
     public class Functions
     {
@@ -42,7 +43,19 @@ namespace Extensions
             TextBox txt = (TextBox)sender;
             switch (keyType)
             {
-                case KeyType.DecimalNumbers:
+                case KeyType.Decimals:
+                    txt.Text = new string((from c in txt.Text
+                                           where char.IsDigit(c) || c.IsPeriod()
+                                           select c).ToArray());
+
+                    if (txt.Text.Substring(txt.Text.IndexOf(".", StringComparison.Ordinal) + 1).Contains("."))
+                        txt.Text = txt.Text.Substring(0, txt.Text.IndexOf(".", StringComparison.Ordinal) + 1) + txt.Text.Substring(txt.Text.IndexOf(".", StringComparison.Ordinal) + 1).Replace(".", "");
+                    break;
+
+                case KeyType.Integers:
+                    txt.Text = new string((from c in txt.Text
+                                           where char.IsDigit(c)
+                                           select c).ToArray());
                     break;
 
                 case KeyType.Letters:
@@ -51,16 +64,25 @@ namespace Extensions
                                            select c).ToArray());
                     break;
 
-                case KeyType.NegativeDecimalNumbers:
-                    break;
-
-                case KeyType.NegativeNumbers:
-                    break;
-
-                case KeyType.Numbers:
+                case KeyType.NegativeDecimals:
                     txt.Text = new string((from c in txt.Text
-                                           where char.IsDigit(c)
+                                           where char.IsDigit(c) || c.IsPeriod() || c.IsHyphen()
                                            select c).ToArray());
+
+                    if (txt.Text.Substring(txt.Text.IndexOf(".", StringComparison.Ordinal) + 1).Contains("."))
+                        txt.Text = txt.Text.Substring(0, txt.Text.IndexOf(".", StringComparison.Ordinal) + 1) + txt.Text.Substring(txt.Text.IndexOf(".", StringComparison.Ordinal) + 1).Replace(".", "");
+
+                    if (txt.Text.Substring(txt.Text.IndexOf("-", StringComparison.Ordinal) + 1).Contains("-"))
+                        txt.Text = txt.Text.Substring(0, txt.Text.IndexOf("-", StringComparison.Ordinal) + 1) + txt.Text.Substring(txt.Text.IndexOf("-", StringComparison.Ordinal) + 1).Replace("-", "");
+                    break;
+
+                case KeyType.NegativeIntegers:
+                    txt.Text = new string((from c in txt.Text
+                                           where char.IsDigit(c) || c.IsHyphen()
+                                           select c).ToArray());
+
+                    if (txt.Text.Substring(txt.Text.IndexOf("-", StringComparison.Ordinal) + 1).Contains("-"))
+                        txt.Text = txt.Text.Substring(0, txt.Text.IndexOf("-", StringComparison.Ordinal) + 1) + txt.Text.Substring(txt.Text.IndexOf("-", StringComparison.Ordinal) + 1).Replace("-", "");
                     break;
 
                 default:
@@ -82,22 +104,28 @@ namespace Extensions
 
             switch (keyType)
             {
-                case KeyType.DecimalNumbers:
+                case KeyType.Decimals:
+                    e.Handled = !keys.Any(key => key) && (Key.D0 > k || k > Key.D9) &&
+                                (Key.NumPad0 > k || k > Key.NumPad9) && k != Key.Decimal && k != Key.OemPeriod;
+                    break;
+
+                case KeyType.Integers:
+                    e.Handled = !keys.Any(key => key) && (Key.D0 > k || k > Key.D9) &&
+                                (Key.NumPad0 > k || k > Key.NumPad9);
                     break;
 
                 case KeyType.Letters:
                     e.Handled = !keys.Any(key => key) && (Key.A > k || k > Key.Z);
                     break;
 
-                case KeyType.NegativeDecimalNumbers:
-                    break;
-
-                case KeyType.NegativeNumbers:
-                    break;
-
-                case KeyType.Numbers:
+                case KeyType.NegativeDecimals:
                     e.Handled = !keys.Any(key => key) && (Key.D0 > k || k > Key.D9) &&
-                                (Key.NumPad0 > k || k > Key.NumPad9);
+                                (Key.NumPad0 > k || k > Key.NumPad9) && k != Key.Decimal && k != Key.Subtract && k != Key.OemPeriod && k != Key.OemMinus;
+                    break;
+
+                case KeyType.NegativeIntegers:
+                    e.Handled = !keys.Any(key => key) && (Key.D0 > k || k > Key.D9) &&
+                                (Key.NumPad0 > k || k > Key.NumPad9) && k != Key.Subtract && k != Key.OemMinus;
                     break;
 
                 default:

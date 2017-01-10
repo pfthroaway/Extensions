@@ -1,0 +1,2 @@
+Don't allow more than 2 decimal places past the decimal place.
+Force negative signs to the front of the number.
