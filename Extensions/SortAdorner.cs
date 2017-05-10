@@ -7,10 +7,10 @@ namespace Extensions
 {
     public class SortAdorner : Adorner
     {
-        private static readonly Geometry ascGeometry =
+        private static readonly Geometry AscGeometry =
                 Geometry.Parse("M 0 4 L 3.5 0 L 7 4 Z");
 
-        private static readonly Geometry descGeometry =
+        private static readonly Geometry DescGeometry =
                 Geometry.Parse("M 0 0 L 3.5 4 L 7 0 Z");
 
         public ListSortDirection Direction { get; }
@@ -18,7 +18,7 @@ namespace Extensions
         public SortAdorner(UIElement element, ListSortDirection dir)
                 : base(element)
         {
-            this.Direction = dir;
+            Direction = dir;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -35,9 +35,9 @@ namespace Extensions
                     );
             drawingContext.PushTransform(transform);
 
-            Geometry geometry = ascGeometry;
-            if (this.Direction == ListSortDirection.Descending)
-                geometry = descGeometry;
+            Geometry geometry = AscGeometry;
+            if (Direction == ListSortDirection.Descending)
+                geometry = DescGeometry;
             drawingContext.DrawGeometry(Brushes.Black, null, geometry);
 
             drawingContext.Pop();

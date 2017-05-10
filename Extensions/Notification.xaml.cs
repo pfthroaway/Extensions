@@ -13,11 +13,11 @@ namespace Extensions
         {
             try
             {
-                btnYes.Visibility = (Visibility)Convert.ToInt32(toggle);
-                btnNo.Visibility = (Visibility)Convert.ToInt32(toggle);
-                btnOK.Visibility = (Visibility)Convert.ToInt32(!toggle);
-                imgRed.Visibility = (Visibility)Convert.ToInt32(toggle);
-                imgYellow.Visibility = (Visibility)Convert.ToInt32(!toggle);
+                BtnYes.Visibility = (Visibility)Convert.ToInt32(toggle);
+                BtnNo.Visibility = (Visibility)Convert.ToInt32(toggle);
+                BtnOk.Visibility = (Visibility)Convert.ToInt32(!toggle);
+                ImgRed.Visibility = (Visibility)Convert.ToInt32(toggle);
+                ImgYellow.Visibility = (Visibility)Convert.ToInt32(!toggle);
             }
             catch (Exception ex)
             {
@@ -27,17 +27,17 @@ namespace Extensions
 
         #region Button-Click Methods
 
-        private void btnYes_Click(object sender, RoutedEventArgs e)
+        private void BtnYes_Click(object sender, RoutedEventArgs e)
         {
             CloseWindow(true);
         }
 
-        private void btnOK_Click(object sender, RoutedEventArgs e)
+        private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
             CloseWindow(true);
         }
 
-        private void btnNo_Click(object sender, RoutedEventArgs e)
+        private void BtnNo_Click(object sender, RoutedEventArgs e)
         {
             CloseWindow(false);
         }
@@ -50,7 +50,7 @@ namespace Extensions
         private void CloseWindow(bool result)
         {
             DialogResult = result;
-            this.Close();
+            Close();
         }
 
         /// <summary>Creates a new instance of Notification.</summary>
@@ -61,7 +61,7 @@ namespace Extensions
         {
             InitializeComponent();
             Title = windowName;
-            txtPopup.Text = text;
+            TxtPopup.Text = text;
             YesNoButtons(buttons == NotificationButtons.OK);
         }
 
@@ -75,7 +75,7 @@ namespace Extensions
             InitializeComponent();
             Title = windowName;
             Owner = owner;
-            txtPopup.Text = text;
+            TxtPopup.Text = text;
             YesNoButtons(buttons == NotificationButtons.OK);
         }
 

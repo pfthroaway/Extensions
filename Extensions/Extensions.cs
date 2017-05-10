@@ -10,11 +10,11 @@ namespace Extensions
     public static class ThreadSafeRandom
     {
         [ThreadStatic]
-        private static Random Local;
+        private static Random _local;
 
         /// <summary>Returns a Random based on this thread.</summary>
-        public static Random ThisThreadsRandom => Local ??
-                                                    (Local = new Random(unchecked(Environment.TickCount * 31 + Thread.CurrentThread.ManagedThreadId)));
+        public static Random ThisThreadsRandom => _local ??
+                                                    (_local = new Random(unchecked(Environment.TickCount * 31 + Thread.CurrentThread.ManagedThreadId)));
     }
 
     /// <summary>Extension class to more easily parse Decimals.</summary>
@@ -25,8 +25,7 @@ namespace Extensions
         /// <returns>Parsed Decimal</returns>
         public static decimal Parse(string text)
         {
-            decimal temp;
-            decimal.TryParse(text, out temp);
+            decimal.TryParse(text, out decimal temp);
             return temp;
         }
 
@@ -35,8 +34,7 @@ namespace Extensions
         /// <returns>Parsed Decimal</returns>
         public static decimal Parse(object obj)
         {
-            decimal temp;
-            decimal.TryParse(obj.ToString(), out temp);
+            decimal.TryParse(obj.ToString(), out decimal temp);
             return temp;
         }
     }
@@ -49,8 +47,7 @@ namespace Extensions
         /// <returns></returns>
         public static int Parse(string text)
         {
-            int temp;
-            int.TryParse(text, out temp);
+            int.TryParse(text, out int temp);
             return temp;
         }
 
@@ -68,7 +65,6 @@ namespace Extensions
             {
                 new Notification(e.Message, "Error Parsing Integer", NotificationButtons.OK).ShowDialog();
             }
-
             return temp;
         }
 
@@ -95,8 +91,7 @@ namespace Extensions
         /// <returns>Parsed integer</returns>
         public static int Parse(object obj)
         {
-            int temp;
-            int.TryParse(obj.ToString(), out temp);
+            int.TryParse(obj.ToString(), out int temp);
             return temp;
         }
 
@@ -123,8 +118,7 @@ namespace Extensions
         /// <returns>Parsed Boolean</returns>
         public static bool Parse(string text)
         {
-            bool temp;
-            bool.TryParse(text, out temp);
+            bool.TryParse(text, out bool temp);
             return temp;
         }
 
@@ -154,8 +148,7 @@ namespace Extensions
         /// <returns>Parsed DateTime</returns>
         public static DateTime Parse(string text)
         {
-            DateTime temp;
-            DateTime.TryParse(text, out temp);
+            DateTime.TryParse(text, out DateTime temp);
             return temp;
         }
 
@@ -164,8 +157,7 @@ namespace Extensions
         /// <returns>Parsed DateTime</returns>
         public static DateTime Parse(object obj)
         {
-            DateTime temp;
-            DateTime.TryParse(obj.ToString(), out temp);
+            DateTime.TryParse(obj.ToString(), out DateTime temp);
             return temp;
         }
     }
@@ -178,8 +170,7 @@ namespace Extensions
         /// <returns>Parsed Double</returns>
         public static double Parse(string text)
         {
-            double temp;
-            double.TryParse(text, out temp);
+            double.TryParse(text, out double temp);
             return temp;
         }
 
@@ -188,14 +179,30 @@ namespace Extensions
         /// <returns>Parsed Double</returns>
         public static double Parse(object obj)
         {
-            double temp;
-            double.TryParse(obj.ToString(), out temp);
+            double.TryParse(obj.ToString(), out double temp);
             return temp;
         }
     }
 
     public static class MyExtensions
-    {
+    {/// <summary>Adds multiple ranges to a List.</summary>
+     /// <typeparam name="T">Type</typeparam>
+     /// <param name="list">List for others to be added to</param>
+     /// <param name="lists">Lists to be added to list</param>
+        public static void AddRanges<T>(this List<T> list, params IEnumerable<T>[] lists)
+        {
+            foreach (IEnumerable<T> currentList in lists)
+                list.AddRange(currentList);
+        }
+
+        /// <summary>Determines if this character is a hyphen.</summary>
+        /// <param name="c">Character to be evaluated</param>
+        /// <returns>Returns true if character is a hyphen</returns>
+        public static bool IsHyphen(this char c)
+        {
+            return c.Equals('-');
+        }
+
         /// <summary>Determines if this character is a period.</summary>
         /// <param name="c">Character to be evaluated</param>
         /// <returns>Returns true if character is a period</returns>
@@ -210,14 +217,6 @@ namespace Extensions
         public static bool IsPeriodOrComma(this char c)
         {
             return c.Equals('.') | c.Equals(',');
-        }
-
-        /// <summary>Determines if this character is a hyphen.</summary>
-        /// <param name="c">Character to be evaluated</param>
-        /// <returns>Returns true if character is a hyphen</returns>
-        public static bool IsHyphen(this char c)
-        {
-            return c.Equals('-');
         }
 
         /// <summary>Shuffles a List.</summary>

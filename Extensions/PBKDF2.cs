@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace Extensions
 {
-    public class PasswordHash
+    /// <summary>Handles hashing and validating passwords using PBKDF2.</summary>
+    public class PBKDF2
     {
         private const int SaltByteSize = 24;
         private const int HashByteSize = 20; // to match the size of the PBKDF2-HMAC-SHA-1 hash
@@ -15,7 +15,7 @@ namespace Extensions
 
         /// <summary>Hashes the passed password.</summary>
         /// <param name="password">Plaintext password</param>
-        /// <returns></returns>
+        /// <returns>Hashed password</returns>
         public static string HashPassword(string password)
         {
             RNGCryptoServiceProvider cryptoProvider = new RNGCryptoServiceProvider();
@@ -23,20 +23,18 @@ namespace Extensions
             cryptoProvider.GetBytes(salt);
 
             byte[] hash = GetPbkdf2Bytes(password, salt, Pbkdf2Iterations, HashByteSize);
-            return Pbkdf2Iterations + ":" +
-                   Convert.ToBase64String(salt) + ":" +
-                   Convert.ToBase64String(hash);
+            return $"{Pbkdf2Iterations}:{Convert.ToBase64String(salt)}:{Convert.ToBase64String(hash)}";
         }
 
         /// <summary>Validates the plaintext password against the hashed password.</summary>
         /// <param name="password">Plaintext password</param>
         /// <param name="correctHash">Hashed correct password</param>
-        /// <returns></returns>
+        /// <returns>Returns true if successful validation</returns>
         public static bool ValidatePassword(string password, string correctHash)
         {
             char[] delimiter = { ':' };
             string[] split = correctHash.Split(delimiter);
-            int iterations = Int32.Parse(split[IterationIndex]);
+            int iterations = int.Parse(split[IterationIndex]);
             byte[] salt = Convert.FromBase64String(split[SaltIndex]);
             byte[] hash = Convert.FromBase64String(split[Pbkdf2Index]);
 
@@ -68,32 +66,6 @@ namespace Extensions
         {
             Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt) { IterationCount = iterations };
             return pbkdf2.GetBytes(outputBytes);
-        }
-
-        /// <summary>Converts a byte array to a string.</summary>
-        /// <param name="arrayInput">Byte array to be converted</param>
-        /// <returns>String from byte array</returns>
-        private static string ByteToString(byte[] arrayInput)
-        {
-            StringBuilder strOutput = new StringBuilder(arrayInput.Length);
-
-            foreach (byte input in arrayInput)
-                strOutput.Append(input.ToString("X2"));
-
-            return strOutput.ToString().ToLower();
-        }
-
-        /// <summary>Hashes text with MD5 encryption.</summary>
-        /// <param name="text">Text to be encrypted</param>
-        /// <returns>Hashed text</returns>
-        public static string HashMD5(string text)
-        {
-            MD5CryptoServiceProvider objMD5 = new MD5CryptoServiceProvider();
-
-            byte[] arrayData = Encoding.UTF8.GetBytes(text);
-            byte[] arrayHash = objMD5.ComputeHash(arrayData);
-
-            return ByteToString(arrayHash);
         }
     }
 }
