@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Extensions
+namespace Extensions.Encryption
 {
     /// <summary>Handles hashing and validating passwords using PBKDF2.</summary>
     public class PBKDF2

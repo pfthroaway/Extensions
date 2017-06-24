@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Extensions
+namespace Extensions.Encryption
 {
     public class MD5
     {
