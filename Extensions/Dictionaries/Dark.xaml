@@ -9,12 +9,25 @@
         <ResourceDictionary Source="Dark/GroupBox.xaml" />
         <ResourceDictionary Source="Dark/ListBox.xaml" />
         <ResourceDictionary Source="Dark/ListView.xaml" />
+        <ResourceDictionary Source="Dark/Menu.xaml" />
+        <ResourceDictionary Source="Dark/Page.xaml" />
         <ResourceDictionary Source="Dark/PasswordBox.xaml" />
+        <ResourceDictionary Source="Dark/Separator.xaml" />
         <ResourceDictionary Source="Dark/TabControl.xaml" />
+        <ResourceDictionary Source="Dark/TextBlock.xaml" />
         <ResourceDictionary Source="Dark/TextBox.xaml" />
         <ResourceDictionary Source="Dark/Window.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Color x:Key="AwesomeBlueColor">#0292FC</Color>
     <SolidColorBrush x:Key="AwesomeBlueBrush" Color="#0292FC" />
+
+    <!--
+    Background: #000033
+    Foreground: #CCCCCC
+    Control   : #000066, DarkBlue
+    HoverPress: #000099, #0000CC
+    Bright    : #0000CC
+    Border    : #0292FC
+    -->
 </ResourceDictionary>
