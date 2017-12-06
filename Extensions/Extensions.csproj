@@ -77,6 +77,8 @@
     <Compile Include="DataTypeHelpers\DecimalHelper.cs" />
     <Compile Include="DataTypeHelpers\DoubleHelper.cs" />
     <Compile Include="DataTypeHelpers\EnumHelper.cs" />
+    <Compile Include="DataTypeHelpers\LongHelper.cs" />
+    <Compile Include="DataTypeHelpers\ULongHelper.cs" />
     <Compile Include="Encryption\Argon2.cs" />
     <Compile Include="Enums\NotificationButtons.cs" />
     <Compile Include="Extensions.cs" />
