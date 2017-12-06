@@ -34,10 +34,7 @@ namespace Extensions.DatabaseHelp
                 }
                 catch (Exception ex)
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        new Notification(ex.Message, "Error Filling DataSet", NotificationButtons.OK).ShowDialog();
-                    });
+                    Application.Current.Dispatcher.Invoke(() => new Notification(ex.Message, "Error Filling DataSet", NotificationButtons.OK).ShowDialog());
                 }
                 finally
                 {
@@ -66,10 +63,7 @@ namespace Extensions.DatabaseHelp
                 }
                 catch (Exception ex)
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        new Notification(ex.Message, "Error Filling DataSet", NotificationButtons.OK).ShowDialog();
-                    });
+                    Application.Current.Dispatcher.Invoke(() => new Notification(ex.Message, "Error Filling DataSet", NotificationButtons.OK).ShowDialog());
                 }
                 finally
                 {
