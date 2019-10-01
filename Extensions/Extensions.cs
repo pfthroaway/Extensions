@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +20,21 @@ namespace Extensions
             foreach (IEnumerable<T> currentList in lists)
                 list.AddRange(currentList);
         }
+
+        /// <summary>Determines the starting day of a given week.</summary>
+        /// <param name="dt">Date used to determine the first day of the week</param>
+        /// <param name="startOfWeek">Day of the week chosen to start the week</param>
+        /// <returns>The starting day of a given week</returns>
+        public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+        {
+            int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
+            return dt.AddDays(-1 * diff).Date;
+        }
+
+        /// <summary>This method converts a <see cref="TimeSpan"/> to a readable string.</summary>
+        /// <param name="ts"><see cref="TimeSpan"/> to be converted.</param>
+        /// <returns>Custom formatted string</returns>
+        public static string ToCustomString(this TimeSpan ts) => ts.Days > 0 ? $"{ts.Days}:{ts.Hours}:{ts.Minutes}:{ts.Seconds}" : $"{ts.Hours}:{ts.Minutes}:{ts.Seconds}";
 
         /// <summary>Determines if this character is a comma.</summary>
         /// <param name="c">Character to be evaluated</param>
@@ -59,7 +77,7 @@ namespace Extensions
         /// <summary>Formats DateTime.Now to my desired string format</summary>
         /// <param name="dt">DateTime</param>
         /// <returns>Formatted DateTime.Now</returns>
-        public static string NowToString(this DateTime dt) => DateTime.Now.ToString(@"yyyy\/MM\/dd hh\:mm\:ss tt");
+        public static string NowToString(this DateTime dt) => DateTime.Now.ToString("'yyyy':'MM':'dd' 'hh':'mm':'ss' tt", new CultureInfo("en-US"));
 
         /// <summary>Replaces an item in a List.</summary>
         /// <typeparam name="T">Type of object being replaced</typeparam>
@@ -103,6 +121,26 @@ namespace Extensions
                 cancellationToken.Register(tcs.SetCanceled);
 
             return tcs.Task;
+        }
+
+        public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
+        {
+            if (!overwrite)
+            {
+                archive.ExtractToDirectory(destinationDirectoryName);
+                return;
+            }
+            foreach (ZipArchiveEntry file in archive.Entries)
+            {
+                string completeFileName = Path.Combine(destinationDirectoryName, file.FullName);
+                string directory = Path.GetDirectoryName(completeFileName);
+
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+
+                if (file.Name != "")
+                    file.ExtractToFile(completeFileName, true);
+            }
         }
     }
 }
